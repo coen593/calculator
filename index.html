@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/4c536a6bd5.js" crossorigin="anonymous"></script>
     <script src="script.js" defer></script>
 </head>
 
@@ -42,7 +43,18 @@
             </div>
         </div>
     </div>
-    <div id="footer">Copyright &copy; <a href="https://github.com/coen593">coen593</a></div>
+    <div id="footer">
+        <p>
+            Copyright ©
+            <script>
+                document.write(new Date().getFullYear())
+            </script>
+            coen593
+        </p>
+        <a href="https://github.com/coen593" target="_blank">
+            <i class="fab fa-github"></i>
+        </a>
+    </div>
 </body>
 
 </html>

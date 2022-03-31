@@ -1,3 +1,11 @@
+// Control appheight to keep 100vh in browser correctly on most browsers
+const getAppHeight = () => {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+getAppHeight()
+window.addEventListener('resize', () => getAppHeight());
+
 // Calculation functions and operator
 const add = (x, y) => x + y
 const subtract = (x, y) => x - y
@@ -35,11 +43,13 @@ display.innerText = 0 // Set display text to 0 initially
 
 
 // Handler functions 
+// As usually an updated currentNumber means the display.innerText is updated the same, a function to do both.
 const updateCurrent = (input) => {
     currentNumber = input
     display.innerText = input
 }
 
+// If the number entered is too large to fit on the display, the calculator is reset.
 const checkLargeNumber = () => {
     if (display.clientHeight > display.parentNode.clientHeight) {
         handleClear()
@@ -48,6 +58,9 @@ const checkLargeNumber = () => {
     return
 }
 
+// Handles when a number key is pushed, either on the calculator or by keys.
+// The first If statement leads to a reset of the number if it's the solution of a previous equation.
+// The second If statement ensures correct handling of the . separator.
 const handleNumber = num => {
     if (isOperated) {
         handleClear()
@@ -61,6 +74,10 @@ const handleNumber = num => {
     checkLargeNumber()
 }
 
+// Handles when an operator key is pushed, either on the calculator or by keys.
+// First If statement ensures the previous inputs are calculated provided they are all there.
+// The operator is set to the key pressed.
+// The prevNumber is populated so currentNumber can be emptied and readied for the next inputs.
 const handleOperator = op => {
     isSeparated = false
     isOperated = false
@@ -72,6 +89,7 @@ const handleOperator = op => {
     currentNumber = ''
 }
 
+// Operates the calculation *only* if all required inputs are provided.
 const handleEquals = () => {
     if (operator && currentNumber && prevNumber) {
         updateCurrent(operate(operator, prevNumber, currentNumber))
@@ -81,6 +99,7 @@ const handleEquals = () => {
     }
 }
 
+// Resets all variables.
 const handleClear = () => {
     currentNumber = ''
     operator = ''
@@ -90,13 +109,16 @@ const handleClear = () => {
     isOperated = false
 }
 
+// Removes last digit on the currentNumber.
 const handleDelete = () => updateCurrent(currentNumber.slice(0, -1))
 
+// Turns a positive currentNumber into a negative one and vice versa.
 const handleNegative = () => updateCurrent(currentNumber * -1)
 
+// Sets the currentNumber up to include a . separator after the next number is entered.
 const handleSeparator = () => isSeparated = true
 
-// Button event listeners linking to handler functions
+// Button event listener linking inputs to handler functions.
 const buttons = document.querySelectorAll('.btn')
 buttons.forEach(button => {
     button.addEventListener('click', function() {
@@ -110,9 +132,9 @@ buttons.forEach(button => {
     })
 })
 
+// Key event listener linking inputs to handler functions.
 document.addEventListener('keydown', (e) => {
     const key = e.key
-    console.log(key)
     if (Number.isInteger(+key) && key !== ' ') handleNumber(key)
     if (key === '*') handleOperator('multiply')
     if (key === '-') handleOperator('subtract')
