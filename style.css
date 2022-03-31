@@ -12,7 +12,7 @@ body {
     height: 600px;
     width: 380px;
     border: 2px solid black;
-    border-radius: 10px;
+    border-radius: 15px;
     background-color: deepskyblue;
     display: flex;
     flex-direction: column;
@@ -21,16 +21,16 @@ body {
 #display {
     width: calc(100%-30px);
     background-color: azure;
-    border-radius: 1px;
+    border-radius: 5px;
     border: 2px solid black;
-    font-size: 48px;
+    font-size: 52px;
     font-family: 'VT323', monospace;
     height: 110px;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
     text-align: right;
-    padding: 7px;
+    padding: 0 3px;
     box-sizing: border-box;
     word-break: break-all;
     margin: 15px 15px 0 15px;
@@ -64,6 +64,7 @@ body {
     font-size: 30px;
     border-radius: 30px;
     user-select: none;
+    border: rgb(43, 41, 41) 1px solid;
 }
 
 .btn:hover {
