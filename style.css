@@ -34,7 +34,7 @@ body {
     box-sizing: border-box;
     word-break: break-all;
     margin: 15px 15px 0 15px;
-    ;
+    overflow: auto;
 }
 
 #buttons {
@@ -42,7 +42,6 @@ body {
 }
 
 #clear {
-    height: 85px;
     width: 165px;
 }
 
@@ -64,6 +63,13 @@ body {
     color: white;
     font-size: 30px;
     border-radius: 30px;
+    user-select: none;
+}
+
+.btn:hover {
+    cursor: pointer;
+    transform: scale(0.98);
+    opacity: 0.9;
 }
 
 #bottom-buttons .btn {

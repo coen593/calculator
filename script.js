@@ -2,7 +2,7 @@
 const add = (x, y) => x + y
 const subtract = (x, y) => x - y
 const multiply = (x, y) => x * y
-const divide = (x, y) => y === 0 ? "DON'T YOU DARE" : x / y
+const divide = (x, y) => y === 0 ? 'zero' : x / y
 const operate = (op, x, y) => {
     let outcome = ''
     x = parseFloat(x)
@@ -21,11 +21,11 @@ const operate = (op, x, y) => {
             outcome = divide(x, y)
             break
     }
-    return outcome
+    return outcome === 'zero' ? "DON'T YOU DARE" : Math.round(outcome * 10000000000) / 10000000000
 }
 
 // Initialisation of general variables
-const display = document.querySelector('#display') // Get display to be updated
+const display = document.querySelector('#displayText') // Get display to be updated
 let currentNumber = '' // Memory storage for the number currently being entered
 let prevNumber = '' // Memory storage for the previous number when second number in equation is entered
 let operator = '' // Stores which operator was last clicked
@@ -35,14 +35,38 @@ display.innerText = 0 // Set display text to 0 initially
 
 
 // Handler functions 
-const updateCurrent = (x) => {
-    currentNumber = x
-    display.innerText = x
+const updateCurrent = (input) => {
+    currentNumber = input
+    display.innerText = input
 }
 
-const handleNumber = button => updateCurrent(currentNumber + button.innerText)
+const checkLargeNumber = () => {
+    if (display.clientHeight > display.parentNode.clientHeight) {
+        handleClear()
+        display.innerText = 'Too many digits. Cannot compute.'
+    }
+    return
+}
+
+const handleNumber = button => {
+    if (isOperated) {
+        handleClear()
+        isOperated = false
+    }
+    if (isSeparated && !currentNumber.includes('.')) {
+        updateCurrent(currentNumber + '.' + button.innerText)
+    } else {
+        updateCurrent(currentNumber + button.innerText)
+    }
+    checkLargeNumber()
+}
 
 const handleOperator = button => {
+    isSeparated = false
+    isOperated = false
+    if (operator && currentNumber && prevNumber) {
+        updateCurrent(operate(operator, prevNumber, currentNumber))
+    }
     if (currentNumber) operator = button.id
     prevNumber = currentNumber
     currentNumber = ''
@@ -53,6 +77,7 @@ const handleEquals = () => {
         updateCurrent(operate(operator, prevNumber, currentNumber))
         operator = ''
         prevNumber = ''
+        isOperated = true
     }
 }
 
@@ -61,11 +86,15 @@ const handleClear = () => {
     operator = ''
     prevNumber = ''
     display.innerText = 0
+    isSeparated = false
+    isOperated = false
 }
 
 const handleDelete = () => updateCurrent(currentNumber.slice(0, -1))
 
 const handleNegative = () => updateCurrent(currentNumber * -1)
+
+const handleSeparator = () => isSeparated = true
 
 // Button event listeners linking to handler functions
 const buttons = document.querySelectorAll('.btn')
