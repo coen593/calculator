@@ -48,26 +48,26 @@ const checkLargeNumber = () => {
     return
 }
 
-const handleNumber = button => {
+const handleNumber = num => {
     if (isOperated) {
         handleClear()
         isOperated = false
     }
     if (isSeparated && !currentNumber.includes('.')) {
-        updateCurrent(currentNumber + '.' + button.innerText)
+        updateCurrent(currentNumber + '.' + num)
     } else {
-        updateCurrent(currentNumber + button.innerText)
+        updateCurrent(currentNumber + num)
     }
     checkLargeNumber()
 }
 
-const handleOperator = button => {
+const handleOperator = op => {
     isSeparated = false
     isOperated = false
     if (operator && currentNumber && prevNumber) {
         updateCurrent(operate(operator, prevNumber, currentNumber))
     }
-    if (currentNumber) operator = button.id
+    if (currentNumber) operator = op
     prevNumber = currentNumber
     currentNumber = ''
 }
@@ -100,12 +100,26 @@ const handleSeparator = () => isSeparated = true
 const buttons = document.querySelectorAll('.btn')
 buttons.forEach(button => {
     button.addEventListener('click', function() {
-        if (this.classList.contains('number')) handleNumber(this)
-        if (this.classList.contains('operator')) handleOperator(this)
+        if (this.classList.contains('number')) handleNumber(this.innerText)
+        if (this.classList.contains('operator')) handleOperator(this.id)
         if (button.id === 'clear') handleClear()
         if (button.id === 'equals') handleEquals()
         if (button.id === 'negative') handleNegative()
         if (button.id === 'separator') handleSeparator()
         if (button.id === 'delete') handleDelete()
     })
+})
+
+document.addEventListener('keydown', (e) => {
+    const key = e.key
+    console.log(key)
+    if (Number.isInteger(+key) && key !== ' ') handleNumber(key)
+    if (key === '*') handleOperator('multiply')
+    if (key === '-') handleOperator('subtract')
+    if (key === '+') handleOperator('add')
+    if (key === '/') handleOperator('divide')
+    if (key === ' ' || key === 'Enter' || key === '=') handleEquals()
+    if (key === 'Escape') handleClear()
+    if (key === '.') handleSeparator()
+    if (key === 'Backspace' || key === 'Delete') handleDelete()
 })
