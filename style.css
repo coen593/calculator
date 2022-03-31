@@ -91,3 +91,19 @@ body {
 #clear {
     background-color: darkslategrey;
 }
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: darkblue;
+    color: white;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#footer a {
+    color: white
+}
